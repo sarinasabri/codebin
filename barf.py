@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Barf, a cli message system.
-#
+# Version: 1.1
 # Author: Sina Mashek <mashek@thescoundrels.net>
 # License: Expat, http://cptmashek.mit-license.org
 
