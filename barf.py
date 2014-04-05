@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Barf, a cli message system.
-# Version: 1.1
+#
 # Author: Sina Mashek <mashek@thescoundrels.net>
+# Version 1.2
 # License: Expat, http://cptmashek.mit-license.org
 
 import datetime
@@ -18,13 +19,16 @@ class Barf:
 		"PLG": '\033[35m [*]',
 		"DBG": '\033[1;91m [$]',
 		"ERR": '\033[91m [!]',
-	}	
-
+		"ROL": '\033[33m [ ]',
+		"TAB": '\t',
+	}
+	
 	def __init__(self, code, message, time=True):
-		if code not in self.msg_codes:
-			code = "DEF"
+		if "debug = true" or "debug = True" in open('options.cfg').read():
+			if code not in self.msg_codes:
+				code = "DEF"
 
-		print self.barf(code, message, time)
+			print self.barf(code, message, time)
 
 	def disable(self):
 		DEF = ''
