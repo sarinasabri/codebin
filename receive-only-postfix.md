@@ -28,4 +28,4 @@ Create /etc/postfix/sender_check and add/edit to your requirements:
 
 Restart postfix with `sudo service postfix restart`
 
-This should be all you need.
+User's email is stored in /var/mail by default.
