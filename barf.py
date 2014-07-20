@@ -1,59 +1,62 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Barf, a cli message system.
 #
 # Author: Sina Mashek <mashek@thescoundrels.net>, Tristy H. <kittytristy@gmail.com>
-# Version 1.3
+# Version 1.4
 # License: Expat, http://cptmashek.mit-license.org
 
 import datetime
 import time
 from platform import system
 
+
 class Barf:
+	def_codes = {
+		'DEF': '  ',
+		'ACT': '[~]',
+		'MSG': '[-]',
+		'SAV': '[#]',
+		'PLG': '[*]',
+		'DBG': '[$]',
+		'ERR': '[!]',
+		'ROL': '[ ]',
+		'TAB': '\t' # Left in for backwards compatibility
+	}
+
 	if system() == "Windows":
 		try:
 			from colorama import init
 			init()
 			msg_codes = {
-				"DEF": '\033[0m    ',
-				"ACT": '\033[33m [~]',
-				"MSG": '\033[34m [-]',
-				"SAV": '\033[32m [#]',
-				"PLG": '\033[35m [*]',
-				"DBG": '\033[1;31m [$]',
-				"ERR": '\033[31m [!]',
-				"ROL": '\033[33m [ ]',
-				"TAB": '\t',
+				"DEF": '\033[0m%s' % def_codes['DEF'],
+				"ACT": '\033[33m%s' % def_codes['ACT'],
+				"MSG": '\033[34m%s' % def_codes['MSG'],
+				"SAV": '\033[32m%s' % def_codes['SAV'],
+				"PLG": '\033[35m%s' % def_codes['PLG'],
+				"DBG": '\033[1;31m%s' % def_codes['DBG'],
+				"ERR": '\033[31m%s' % def_codes['ERR'],
+				"ROL": '\033[33m%s' % def_codes['ROL'],
+				"TAB": def_codes['TAB']
 			}
 		except:
 			print "Install the 'colorama' python package on Windows for ANSI color code support."
-			msg_codes = {
-				"DEF": '    ',
-				"ACT": ' [~]',
-				"MSG": ' [-]',
-				"SAV": ' [#]',
-				"PLG": ' [*]',
-				"DBG": ' [$]',
-				"ERR": ' [!]',
-				"ROL": ' [ ]',
-				"TAB": '\t',
-			}
+			msg_codes = def_codes
 	else:
 		msg_codes = {
-			"DEF": '\033[0m    ',
-			"ACT": '\033[93m [~]',
-			"MSG": '\033[94m [-]',
-			"SAV": '\033[92m [#]',
-			"PLG": '\033[35m [*]',
-			"DBG": '\033[1;91m [$]',
-			"ERR": '\033[91m [!]',
-			"ROL": '\033[33m [ ]',
-			"TAB": '\t',
+			"DEF": '\033[0m%s' % def_codes['DEF'],
+			"ACT": '\033[93m%s' % def_codes['ACT'],
+			"MSG": '\033[94m%s' % def_codes['MSG'],
+			"SAV": '\033[92m%s' % def_codes['SAV'],
+			"PLG": '\033[35m%s' % def_codes['PLG'],
+			"DBG": '\033[1;91m%s' % def_codes['DBG'],
+			"ERR": '\033[91m%s' % def_codes['ERR'],
+			"ROL": '\033[33m%s' % def_codes['ROL'],
+			"TAB": def_codes['TAB']
 		}
-	
+
 	def __init__(self, code, message, time=True):
+
 		if "debug = true" or "debug = True" in open('options.cfg').read():
 			if code not in self.msg_codes:
 				code = "DEF"
