@@ -11,6 +11,7 @@ import time
 from platform import system
 from sys import modules
 
+
 class Barf:
 	def_codes = {
 		'DEF': '    ',
@@ -21,7 +22,7 @@ class Barf:
 		'DBG': ' [$]',
 		'ERR': ' [!]',
 		'ROL': ' [@]',
-		'TAB': '\t' # Left in for backwards compatibility
+		'TAB': '\t'  # Left in for backwards compatibility
 	}
 
 	if system() == "Windows":
@@ -66,28 +67,20 @@ class Barf:
 			else:
 				print self.barf(code, message, time, hour)
 
-	def disable(self):
-		DEF = ''
-		ACT = ''
-		MSG = ''
-		SAV = ''
-		PLG = ''
-		DBG = ''
-		ERR = ''
-
-
 	def get_time(self, hour):
 		"""
 		Make time sexy
 		"""
-		if hour == False: return time.strftime('[%I:%M:%S %p] ', time.localtime(time.time()))
-		else: return time.strftime('[%H:%M:%S] ', time.localtime(time.time()))
+		if hour is False:
+			return time.strftime('[%I:%M:%S %p] ', time.localtime(time.time()))
+		else:
+			return time.strftime('[%H:%M:%S] ', time.localtime(time.time()))
 
 	def get_time_for_file(self):
-		return "%s-%s" % (datetime.date.today(), time.strftime("%H%M%S",time.localtime(time.time())))
+		return "%s-%s" % (datetime.date.today(), time.strftime("%H%M%S", time.localtime(time.time())))
 
 	def barf(self, code, message, time, hour):
-		if time == False:
+		if time is False:
 			return self.timeless_barf(code, message)
 		else:
 			return self.raw_barf(code, message, hour)
@@ -102,4 +95,3 @@ class Barf:
 		if 'colorama' in modules:
 			message = message.replace("\n", "\033[0m\n")
 		return "%s %s" % (self.msg_codes[code], message)
-
