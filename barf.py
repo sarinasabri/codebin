@@ -13,14 +13,14 @@ from platform import system
 
 class Barf:
 	def_codes = {
-		'DEF': '   ',
-		'ACT': '[~]',
-		'MSG': '[-]',
-		'SAV': '[#]',
-		'PLG': '[*]',
-		'DBG': '[$]',
-		'ERR': '[!]',
-		'ROL': '[ ]',
+		'DEF': '    ',
+		'ACT': ' [~]',
+		'MSG': ' [-]',
+		'SAV': ' [#]',
+		'PLG': ' [*]',
+		'DBG': ' [$]',
+		'ERR': ' [!]',
+		'ROL': ' [ ]',
 		'TAB': '\t' # Left in for backwards compatibility
 	}
 
