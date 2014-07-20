@@ -9,7 +9,7 @@
 import datetime
 import time
 from platform import system
-
+from sys import modules
 
 class Barf:
 	def_codes = {
@@ -20,7 +20,7 @@ class Barf:
 		'PLG': ' [*]',
 		'DBG': ' [$]',
 		'ERR': ' [!]',
-		'ROL': ' [ ]',
+		'ROL': ' [@]',
 		'TAB': '\t' # Left in for backwards compatibility
 	}
 
@@ -31,12 +31,12 @@ class Barf:
 			msg_codes = {
 				"DEF": '\033[0m%s' % def_codes['DEF'],
 				"ACT": '\033[33m%s' % def_codes['ACT'],
-				"MSG": '\033[34m%s' % def_codes['MSG'],
+				"MSG": '\033[44;36m%s' % def_codes['MSG'],
 				"SAV": '\033[32m%s' % def_codes['SAV'],
 				"PLG": '\033[35m%s' % def_codes['PLG'],
-				"DBG": '\033[1;31m%s' % def_codes['DBG'],
+				"DBG": '\033[45;31m%s' % def_codes['DBG'],
 				"ERR": '\033[31m%s' % def_codes['ERR'],
-				"ROL": '\033[33m%s' % def_codes['ROL'],
+				"ROL": '\033[46;33m%s' % def_codes['ROL'],
 				"TAB": def_codes['TAB']
 			}
 		except:
@@ -97,5 +97,7 @@ class Barf:
 		return self.color(code, message) + self.msg_codes["DEF"]
 
 	def color(self, code, message):
+		if 'colorama' in modules:
+			message = message.replace("\n", "\033[0m\n")
 		return "%s %s" % (self.msg_codes[code], message)
 
