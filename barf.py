@@ -9,7 +9,7 @@
 import datetime
 import time
 from platform import system
-
+from sys import modules
 
 class Barf:
 	def_codes = {
@@ -20,7 +20,7 @@ class Barf:
 		'PLG': ' [*]',
 		'DBG': ' [$]',
 		'ERR': ' [!]',
-		'ROL': ' [ ]',
+		'ROL': ' [@]',
 		'TAB': '\t' # Left in for backwards compatibility
 	}
 
@@ -31,12 +31,12 @@ class Barf:
 			msg_codes = {
 				"DEF": '\033[0m%s' % def_codes['DEF'],
 				"ACT": '\033[33m%s' % def_codes['ACT'],
-				"MSG": '\033[34m%s' % def_codes['MSG'],
+				"MSG": '\033[44;36m%s' % def_codes['MSG'],
 				"SAV": '\033[32m%s' % def_codes['SAV'],
 				"PLG": '\033[35m%s' % def_codes['PLG'],
-				"DBG": '\033[1;31m%s' % def_codes['DBG'],
+				"DBG": '\033[45;31m%s' % def_codes['DBG'],
 				"ERR": '\033[31m%s' % def_codes['ERR'],
-				"ROL": '\033[33m%s' % def_codes['ROL'],
+				"ROL": '\033[46;33m%s' % def_codes['ROL'],
 				"TAB": def_codes['TAB']
 			}
 		except:
@@ -55,7 +55,7 @@ class Barf:
 			"TAB": def_codes['TAB']
 		}
 
-	def __init__(self, code, message, time=True):
+	def __init__(self, code, message, time=True, hour=True):
 
 		if "debug = true" or "debug = True" in open('options.cfg').read():
 			if code not in self.msg_codes:
@@ -64,7 +64,7 @@ class Barf:
 			if code == "TAB":
 				print self.timeless_barf(code, message)
 			else:
-				print self.barf(code, message, time)
+				print self.barf(code, message, time, hour)
 
 	def disable(self):
 		DEF = ''
@@ -75,27 +75,31 @@ class Barf:
 		DBG = ''
 		ERR = ''
 
-	def get_time(self):
+
+	def get_time(self, hour):
 		"""
 		Make time sexy
 		"""
-		return time.strftime("[%H:%M:%S] ", time.localtime(time.time()))
+		if hour == False: return time.strftime('[%I:%M:%S %p] ', time.localtime(time.time()))
+		else: return time.strftime('[%H:%M:%S] ', time.localtime(time.time()))
 
 	def get_time_for_file(self):
 		return "%s-%s" % (datetime.date.today(), time.strftime("%H%M%S",time.localtime(time.time())))
 
-	def barf(self, code, message, time):
+	def barf(self, code, message, time, hour):
 		if time == False:
 			return self.timeless_barf(code, message)
 		else:
-			return self.raw_barf(code, message)
+			return self.raw_barf(code, message, hour)
 
-	def raw_barf(self, code, message):
-		return self.color(code, self.get_time() + message) + self.msg_codes["DEF"]
+	def raw_barf(self, code, message, hour):
+		return self.color(code, self.get_time(hour) + message) + self.msg_codes["DEF"]
 
 	def timeless_barf(self, code, message):
 		return self.color(code, message) + self.msg_codes["DEF"]
 
 	def color(self, code, message):
+		if 'colorama' in modules:
+			message = message.replace("\n", "\033[0m\n")
 		return "%s %s" % (self.msg_codes[code], message)
 
