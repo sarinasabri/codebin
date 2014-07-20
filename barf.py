@@ -3,25 +3,55 @@
 #
 # Barf, a cli message system.
 #
-# Author: Sina Mashek <mashek@thescoundrels.net>
-# Version 1.2
+# Author: Sina Mashek <mashek@thescoundrels.net>, Tristy H. <kittytristy@gmail.com>
+# Version 1.3
 # License: Expat, http://cptmashek.mit-license.org
 
 import datetime
 import time
+from platform import system
 
 class Barf:
-	msg_codes = {
-		"DEF": '\033[0m    ',
-		"ACT": '\033[93m [~]',
-		"MSG": '\033[94m [-]',
-		"SAV": '\033[92m [#]',
-		"PLG": '\033[35m [*]',
-		"DBG": '\033[1;91m [$]',
-		"ERR": '\033[91m [!]',
-		"ROL": '\033[33m [ ]',
-		"TAB": '\t',
-	}
+	if system() == "Windows":
+		try:
+			from colorama import init
+			init()
+			msg_codes = {
+				"DEF": '\033[0m    ',
+				"ACT": '\033[33m [~]',
+				"MSG": '\033[34m [-]',
+				"SAV": '\033[32m [#]',
+				"PLG": '\033[35m [*]',
+				"DBG": '\033[1;31m [$]',
+				"ERR": '\033[31m [!]',
+				"ROL": '\033[33m [ ]',
+				"TAB": '\t',
+			}
+		except:
+			print "Install the 'colorama' python package on Windows for ANSI color code support."
+			msg_codes = {
+				"DEF": '    ',
+				"ACT": ' [~]',
+				"MSG": ' [-]',
+				"SAV": ' [#]',
+				"PLG": ' [*]',
+				"DBG": ' [$]',
+				"ERR": ' [!]',
+				"ROL": ' [ ]',
+				"TAB": '\t',
+			}
+	else:
+		msg_codes = {
+			"DEF": '\033[0m    ',
+			"ACT": '\033[93m [~]',
+			"MSG": '\033[94m [-]',
+			"SAV": '\033[92m [#]',
+			"PLG": '\033[35m [*]',
+			"DBG": '\033[1;91m [$]',
+			"ERR": '\033[91m [!]',
+			"ROL": '\033[33m [ ]',
+			"TAB": '\t',
+		}
 	
 	def __init__(self, code, message, time=True):
 		if "debug = true" or "debug = True" in open('options.cfg').read():
