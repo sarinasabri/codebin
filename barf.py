@@ -13,7 +13,7 @@ from platform import system
 
 class Barf:
 	def_codes = {
-		'DEF': '  ',
+		'DEF': '   ',
 		'ACT': '[~]',
 		'MSG': '[-]',
 		'SAV': '[#]',
