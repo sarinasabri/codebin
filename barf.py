@@ -79,7 +79,7 @@ class Barf:
 		"""
 		Make time sexy
 		"""
-		return time.strftime("[%H:%M:%S] ", time.localtime(time.time()))
+		return time.strftime("[%I:%M:%S %p] ", time.localtime(time.time()))
 
 	def get_time_for_file(self):
 		return "%s-%s" % (datetime.date.today(), time.strftime("%H%M%S",time.localtime(time.time())))
