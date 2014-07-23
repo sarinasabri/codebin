@@ -3,7 +3,7 @@
 # Barf, a cli message system.
 #
 # Author: Sina Mashek <mashek@thescoundrels.net>, Tristy H. <kittytristy@gmail.com>
-# Version 1.4
+# Version 1.5
 # License: Expat, http://cptmashek.mit-license.org
 
 import datetime
@@ -57,6 +57,7 @@ class Barf:
 		}
 
 	def __init__(self, code, message, time=True, hour=True):
+		message = str(message)  # force messages to str type
 
 		if "debug = true" or "debug = True" in open('options.cfg').read():
 			if code not in self.msg_codes:
