@@ -2,8 +2,10 @@
 #
 # Barf, a cli message system.
 #
-# Author: Sina Mashek <mashek@thescoundrels.net>, Tristy H. <kittytristy@gmail.com>
-# Version 1.5
+# Authors:
+#    Sina Mashek <mashek@thescoundrels.net>,
+#    Tristy H. <kittytristy@gmail.com>
+# Version 1.6
 # License: Expat, http://cptmashek.mit-license.org
 
 import datetime
@@ -41,7 +43,8 @@ class Barf:
 				"TAB": def_codes['TAB']
 			}
 		except:
-			print "Install the 'colorama' python package on Windows for ANSI color code support."
+			print "Install the 'colorama' python package on Windows " \
+				"for ANSI color code support."
 			msg_codes = def_codes
 	else:
 		msg_codes = {
@@ -57,37 +60,43 @@ class Barf:
 		}
 
 	def __init__(self, code, message, time=True, hour=True):
-		message = str(message)  # force messages to str type
+		message = str(message)
 
 		if "debug = true" or "debug = True" in open('options.cfg').read():
 			if code not in self.msg_codes:
-				code = "DEF"
+				print(self.barf('ERR', 'You must define a barf code.'))
 
-			if code == "TAB":
-				print self.timeless_barf(code, message)
+			if code is "TAB":
+				print(self.timeless_barf(code, message))
 			else:
-				print self.barf(code, message, time, hour)
+				print(self.barf(code, message, time, hour))
 
 	def get_time(self, hour):
 		"""
 		Make time sexy
 		"""
-		if hour is False:
+		if hour is True:
 			return time.strftime('[%I:%M:%S %p] ', time.localtime(time.time()))
 		else:
 			return time.strftime('[%H:%M:%S] ', time.localtime(time.time()))
 
 	def get_time_for_file(self):
-		return "%s-%s" % (datetime.date.today(), time.strftime("%H%M%S", time.localtime(time.time())))
+		return "%s-%s" % (
+			datetime.date.today(),
+			time.strftime("%H%M%S", time.localtime(time.time()))
+		)
 
 	def barf(self, code, message, time, hour):
 		if time is False:
-			return self.timeless_barf(code, message)
+			return str(self.timeless_barf(code, message))
 		else:
-			return self.raw_barf(code, message, hour)
+			return str(self.raw_barf(code, message, hour))
 
 	def raw_barf(self, code, message, hour):
-		return self.color(code, self.get_time(hour) + message) + self.msg_codes["DEF"]
+		return self.color(
+			code,
+			self.get_time(hour) + message
+		) + self.msg_codes["DEF"]
 
 	def timeless_barf(self, code, message):
 		return self.color(code, message) + self.msg_codes["DEF"]
